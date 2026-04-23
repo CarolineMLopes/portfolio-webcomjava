@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Produto - TechStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f4f8; }
+        .card-produto { border-left: 5px solid #0d6efd; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <a th:href="@{/}" class="navbar-brand fw-bold">
+            <i class="bi bi-lightning-charge-fill text-warning"></i> TechStore
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-5" style="max-width: 700px;">
+
+    <h2 class="mb-4"><i class="bi bi-search"></i> Consulta de Produto</h2>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form th:action="@{/consulta}" method="post">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                    <input type="text"
+                           name="id"
+                           class="form-control form-control-lg"
+                           placeholder="Digite o ID do produto"
+                           th:value="${idBuscado}"
+                           required
+                           autofocus>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mensagem de erro -->
+    <div th:if="${erro}" class="alert alert-danger d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+        <span th:text="${erro}"></span>
+    </div>
+
+    <!-- Card do produto encontrado -->
+    <div th:if="${produto}" class="card shadow card-produto">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+            <h5 class="mb-0 fw-bold" th:text="${produto.nome}"></h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-borderless mb-0">
+                <tbody>
+                    <tr>
+                        <th class="text-muted w-25">ID</th>
+                        <td th:text="'#' + ${produto.id}"></td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Descrição</th>
+                        <td th:text="${produto.descricao}"></td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Preço</th>
+                        <td class="fw-bold text-success fs-5"
+                            th:text="${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
